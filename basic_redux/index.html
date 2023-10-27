@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="redux.min.js"></script>
+</head>
+
+<body>
+  <section>
+  </section>
+  <script>
+    //constants
+    const SUM = 'sum'
+    const ADD = 'add'
+    const REMOVE = 'remove'
+
+    //action creator
+    function sum(numberToSum) {
+      return { type: SUM, payload: numberToSum }
+    }
+    function addNumber() {
+      return { type: ADD }
+    }
+    function removeNumber() {
+      return { type: REMOVE }
+    }
+
+    function reducer(state = 10, action) {
+      if (action.type === SUM) return state + action.payload
+      else if (action.type === ADD) return ++state
+      else if (action.type === REMOVE) return --state
+      else return state
+    }
+    const store = Redux.createStore(reducer);
+    let state = store.getState();
+    console.log(state)
+
+    store.dispatch(sum(40))
+    state = store.getState();
+    console.log(state)
+
+    store.dispatch(addNumber())
+    state = store.getState();
+    console.log(state)
+
+    for (let i = 0; i < 18; i++) store.dispatch(removeNumber())
+    state = store.getState();
+    console.log(state)
+
+  </script>
+
+</body>
+
+</html>
