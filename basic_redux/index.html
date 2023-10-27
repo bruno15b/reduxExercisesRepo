@@ -6,17 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="style.css">
   <script src="redux.min.js"></script>
 </head>
 
 <body>
+  <h1> TOTAL: <span id="total"></span></h1>
   <section>
+    <button id="add">add</button>
+    <button id="remove">remove</button>
+    <button id="unsubscribe">unsubscribe</button>
   </section>
   <script>
     //constants
     const SUM = 'sum'
     const ADD = 'add'
-    const REMOVE = 'remove'
+    const REMOVE = "remove"
 
     //action creator
     function sum(numberToSum) {
@@ -51,8 +56,31 @@
     state = store.getState();
     console.log(state)
 
-  </script>
+    const total = document.getElementById("total")
+    total.innerText = state
 
+
+
+    function render() {
+      state = store.getState()
+      total.innerText = state
+    }
+    //subscribe
+    let unsubscribe = store.subscribe(render)
+
+    const btnAdd = document.getElementById("add")
+
+    btnAdd.addEventListener("click", () => store.dispatch(addNumber()))
+
+    const btnRemove = document.getElementById("remove")
+
+    btnRemove.addEventListener("click", () => store.dispatch(removeNumber()))
+
+    const btnUnsubscribe = document.getElementById("unsubscribe")
+    btnUnsubscribe.addEventListener("click", () => unsubscribe())
+
+
+  </script>
 </body>
 
 </html>
