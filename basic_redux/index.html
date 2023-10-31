@@ -16,6 +16,7 @@
     <button id="add">add</button>
     <button id="remove">remove</button>
     <button id="unsubscribe">unsubscribe</button>
+    <button id="modal">on/off</button>
   </section>
   <script>
     //constants
@@ -34,19 +35,41 @@
       return { type: REMOVE }
     }
 
-    function reducer(state = 10, action) {
-      if (action.type === SUM) return state + action.payload
-      else if (action.type === ADD) return ++state
-      else if (action.type === REMOVE) return --state
-      else return state
+    function openModal() {
+      return { type: 'open' }
     }
+
+    function closeModal() {
+      return { type: 'close' }
+    }
+
+    function count(state = 10, action) {
+      switch (action.type) {
+        case SUM: return state + action.payload
+        case ADD: return ++state
+        case REMOVE: return --state
+        default: return state;
+      }
+
+    }
+
+    function modal(state = true, action) {
+      switch (action.type) {
+        case 'open': return true
+        case 'close': return false
+        default: return state;
+      }
+
+    }
+
+    const reducer = Redux.combineReducers({ count, modal })
     const store = Redux.createStore(reducer);
     let state = store.getState();
     console.log(state)
 
     store.dispatch(sum(40))
-    state = store.getState();
-    console.log(state)
+    state.count = store.getState();
+    console.log(state.count)
 
     store.dispatch(addNumber())
     state = store.getState();
@@ -57,28 +80,37 @@
     console.log(state)
 
     const total = document.getElementById("total")
-    total.innerText = state
-
-
+    total.innerText = state.count
 
     function render() {
-      state = store.getState()
-      total.innerText = state
+      const { count, modal } = store.getState()
+      total.innerText = count
+    }
+    function modalRender() {
+      const { count, modal } = store.getState()
+      if (modal) {
+        total.style.display = "none"
+        store.dispatch(closeModal())
+      }
+      else {
+        total.style.display = "inline-block"
+        store.dispatch(openModal())
+      }
     }
     //subscribe
     let unsubscribe = store.subscribe(render)
 
     const btnAdd = document.getElementById("add")
-
     btnAdd.addEventListener("click", () => store.dispatch(addNumber()))
 
     const btnRemove = document.getElementById("remove")
-
     btnRemove.addEventListener("click", () => store.dispatch(removeNumber()))
 
     const btnUnsubscribe = document.getElementById("unsubscribe")
     btnUnsubscribe.addEventListener("click", () => unsubscribe())
 
+    const modalBtn = document.getElementById("modal")
+    modalBtn.addEventListener("click", () => modalRender())
 
   </script>
 </body>
