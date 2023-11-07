@@ -25,26 +25,26 @@
     import { add, remove } from "./store/count.js"
     import { changeName, changeAge } from "./store/person.js"
 
-    const counterTxt = document.getElementById("counter")
-    const addBtn = document.getElementById("add")
-    const removeBtn = document.getElementById("remove")
-    const personTxt = document.getElementById("person")
+    // const counterTxt = document.getElementById("counter")
+    // const addBtn = document.getElementById("add")
+    // const removeBtn = document.getElementById("remove")
+    // const personTxt = document.getElementById("person")
 
-    const state = store.getState();
-    counterTxt.innerText = state.count
+    // const state = store.getState();
+    // counterTxt.innerText = state.count
 
-    store.subscribe(() => {
-      const { count, person } = store.getState()
-      counterTxt.innerText = count
-      personTxt.innerText = person.name + " " + person.age
-    })
+    // store.subscribe(() => {
+    //   const { count, person } = store.getState()
+    //   counterTxt.innerText = count
+    //   personTxt.innerText = person.name + " " + person.age
+    // })
 
-    addBtn.addEventListener("click", () => store.dispatch(add()))
-    removeBtn.addEventListener("click", () => store.dispatch(remove()))
+    // addBtn.addEventListener("click", () => store.dispatch(add()))
+    // removeBtn.addEventListener("click", () => store.dispatch(remove()))
 
-    store.dispatch(changeAge(11))
-    store.dispatch(changeAge(15))
-    store.dispatch(changeName("Laura"))
+    // store.dispatch(changeAge(11))
+    // store.dispatch(changeAge(15))
+    // store.dispatch(changeName("Laura"))
 
   </script>
 </body>
