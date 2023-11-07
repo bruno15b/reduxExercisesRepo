@@ -12,37 +12,37 @@
 </head>
 
 <body>
+  <h1 id="student"></h1>
+  <h1 id="lesson"></h1>
   <script type="module">
-
-    // Usando o Redux (pode usar Immer ou Não).
-    // Crie uma store contendo os estados iniciais abaixo
-    // Crie as seguintes ações:
-    // aluno/INCREMENTAR_TEMPO, adiciona 1 dia de acesso
-    // aluno/REDUZIR_TEMPO, reduz 1 dia de acesso
-    // aluno/MODIFICAR_EMAIL(email), modifica o email do usuário
-    // aulas/COMPLETAR_AULA(id), completa a aula com base no ID passado
-    // aulas/COMPLETAR_CURSO, completa todas as aulas
-    // aulas/RESETAR_CURSO, reseta todas as aulas completas
-    // Crie constantes e action creators para as ações.
-    // Crie um reducer para aluno e um para aulas.
-    // Renderize na tela o nome, email, tempo restante e o total de aulas completas
-    // Configure a DevTools
-
     import store from "./store/configureStore.js"
     import { addAccesTime, removeAccesTime, changeEmail } from "./store/student.js"
     import { completeCourse, resetCourse, completeLesson } from "./store/lesson.js"
 
-    let state = store.getState()
+    function render() {
+      let { lessonReducer, studentReducer } = store.getState()
+      const student = document.getElementById("student")
+      const lesson = document.getElementById("lesson")
+      student.innerText = JSON.stringify(studentReducer)
+      let totalCount
+      totalCount = lessonReducer.reduce((count, lesson) => lesson.completa ? ++count : count
+        , 0
+      )
+      lesson.innerText = "Finished:" + totalCount
+    }
+
+    render()
+
+    store.subscribe(render)
 
     store.dispatch(addAccesTime())
     store.dispatch(addAccesTime())
     store.dispatch(addAccesTime())
     store.dispatch(removeAccesTime())
     store.dispatch(completeCourse())
-
-    state = store.getState()
-
-    console.log(state)
+    store.dispatch(resetCourse())
+    store.dispatch(completeLesson(1))
+    store.dispatch(changeEmail("brunomachado@ig.com.br"))
 
   </script>
 </body>

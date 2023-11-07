@@ -18,20 +18,37 @@ export function resetCourse() {
   return { type: RESET_COURSE };
 }
 
-const initialState = {
-  hist: 0,
-  mat: 0,
-  port: 0,
-};
+const initialState = [
+  {
+    id: 1,
+    nome: "Design",
+    completa: true,
+  },
+  {
+    id: 2,
+    nome: "HTML",
+    completa: false,
+  },
+  {
+    id: 3,
+    nome: "CSS",
+    completa: false,
+  },
+  {
+    id: 4,
+    nome: "JavaScript",
+    completa: false,
+  },
+];
 
 const lessonReducer = (state = initialState, action) => {
   switch (action.type) {
     case COMPLETE_LESSON:
-      return { ...state, [action.payload]: 999 };
+      return state.map((lesson, index) => (index === action.payload - 1 ? { ...lesson, completa: true } : lesson));
     case COMPLETE_COURSE:
-      return { ...state, hist: 999, mat: 999, port: 999 };
+      return state.map((lesson) => ({ ...lesson, completa: true }));
     case RESET_COURSE:
-      return { ...state, hist: 0, mat: 0, port: 0 };
+      return state.map((lesson) => ({ ...lesson, completa: false }));
     default:
       return state;
   }
