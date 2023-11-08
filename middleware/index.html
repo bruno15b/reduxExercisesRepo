@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="immer.umd.production.min.js"></script>
+  <script src="redux.min.js"></script>
+</head>
+<h1>Number: <span id="count"></span></h1>
+<button id="addbutton">ADD</button>
+<button id="removebutton">REMOVE</button>
+
+<body>
+
+  <script type="module">
+
+    const ADD = "ADD_NUMBER"
+    const REMOVE = "REMOVE_NUMBERS"
+
+    const addNumber = () => ({ type: ADD })
+    const removeNumber = () => ({ type: REMOVE })
+
+    const reducer = immer.produce((state, action) => {
+      switch (action.type) {
+        case ADD:
+          return ++state
+        case REMOVE:
+          return --state
+        default:
+          return state
+      }
+    }, 0)
+
+    const logger = (store) => (next) => (action) => {
+      console.group(action.type)
+      console.log("Action:", action);
+      const result = next(action)
+      console.log("Store:", store.getState());
+      console.groupEnd()
+      return result
+    }
+
+    const middleware = Redux.applyMiddleware(logger)
+
+    const store = Redux.createStore(reducer, middleware)
+
+    const btnAdd = document.getElementById("addbutton")
+    const btnRemove = document.getElementById("removebutton")
+    const countTxt = document.getElementById("count")
+
+    function response() {
+      countTxt.innerText = store.getState()
+    }
+
+    response()
+
+    btnAdd.addEventListener("click", () => store.dispatch(addNumber()))
+    btnRemove.addEventListener("click", () => store.dispatch(removeNumber()))
+
+    store.subscribe(response)
+
+    store.dispatch(addNumber())
+    store.dispatch(addNumber())
+    store.dispatch(addNumber())
+
+  </script>
+</body>
+
+</html>

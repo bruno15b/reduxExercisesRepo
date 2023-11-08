@@ -4,7 +4,7 @@ const REMOVE = "count/REMOVE";
 export const add = () => ({ type: ADD });
 export const remove = () => ({ type: REMOVE });
 
-const initialState = 0;
+let initialState = 0;
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
